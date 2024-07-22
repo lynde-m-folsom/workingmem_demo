@@ -684,6 +684,7 @@ var goOmissionPracticeThresh = 0.40;
 var memoryCorrectPracticeThresh = 0.60;
 var memoryOmissionPracticeThresh = 0.20;
 
+
 var missedResponseThresh = 0.2;
 var rtThresh = 1000;
 var letterRtThresh = 1250;
@@ -839,6 +840,10 @@ var goInstruct = [
   `
   <div class="centerbox">
   <p class="block-text">In this experiment, there will be three phases to the task you have to perform. You will do a practice of each part before going through a practice of the entire task.</p>
+  </div>
+  `,
+  `
+  <div class="centerbox">
     <p class="block-text">During this task, you will see shapes appear on the screen one at a time.</p>
     <p class="block-text">If the shape is a <b>${
       possibleResponses[0][0] == "right hand index finger" ? shapes[0] : shapes[1]
@@ -895,52 +900,53 @@ var phase1Instruct = [
   `,
   `
   <div class="centerbox">
-    <p class="block-text">Before you do the shape task that you just practiced, you will see 0, 4, or 6 letters appear on the screen.</p>
+    <p class="block-text">Before you do the shape task that you just practiced, you will see a number of letters appear on the screen.</p>
     <p class="block-text">If there are 4 or 6 letters shown, you must remember all the letters. This will be called your memory set.</p>
-    <p class="block-text">If there are 0 letters for this phase, you will see a grid of 4 or 6 '#'s on the screen instead. You will have no letters to remember for these trials.</p>
-  </div>
-  `, 
-  `
-  <div class="centerbox">
-    <p class="block-text">After you complete the shape task, you will have to make a response based on the contents of your memory set.</p>
-    <p class="block-text">If there were 4 or 6 letters shown during the first phase, you will see a single letter on screen.</p>
+    <p class="block-text">After you complete the shape task, there will be a single letter shown on screen.</p>
+    <p class="block-text">If there were 4 or 6 letters shown during the first phase, you will see a single letter.</p>
     <p class="block-text">If the single letter was <b>${
       possibleResponses[2][0] == "left hand index finger" ? recognition[0] : recognition [1]
     }</b>, from the first phase, press your <b>left hand index finger (X key)</b>.</p>
     <p class="block-text">If the single letter was <b>${
       possibleResponses[3][0] == "left hand middle finger" ? recognition[1] : recognition[0]
     }</b> from the first phase, press your <b>left hand middle finger (Z key)</b>.</p>
-    <p class="block-text">If there were 0 letters shown during the first phase, you will see () on the screen. Press your <b>${possibleResponses[3][0]} (${possibleResponses[3][2]})</b> when you see ().</p>
   </div>
   `, 
+  `
+  <div class="centerbox">
+    <p class="block-text">Sometimes, instead of 4 or 6 letters, you may see 4 or 6 * signs on the screen. You will have no letters to remember for these trials.</p>
+    <p class="block-text">For these trials, after you complete the shape task, you will see () on the screen instead of a single letter.
+    Press your <b>${possibleResponses[3][0]} (${possibleResponses[3][2]})</b> when you see ().</p>
+  </div>
+  `,
   `
   <div class="centerbox">
     <p class="block-text">We’ll start a practice round of the memory task only. During practice, you will receive feedback and a reminder of the rules. These will be taken out for the test, so make sure you understand the instructions before moving on.</p>
-    <p class="block-text">Try to respond as quickly and accurately as possible.</p>
     <p class="block-text">If the single letter was <b>${
       possibleResponses[2][0] == "left hand index finger" ? recognition[0] : recognition [1]
     }</b>, from the first phase, press your <b>left hand index finger (X key)</b>.</p>
     <p class="block-text">If the single letter was <b>${
       possibleResponses[3][0] == "left hand middle finger" ? recognition[1] : recognition[0]
     }</b> from the first phase, press your <b>left hand middle finger (Z key)</b>.</p>
-    <p class="block-text">If there were 0 letters shown during the first phase, you will see () on the screen. Press your <b>${possibleResponses[3][0]} (${possibleResponses[3][2]})</b> when you see ().</p>
+    <p class="block-text">Press your <b>${possibleResponses[3][0]} (${possibleResponses[3][2]})</b> when you see ().</p>
+    <p class="block-text">Remember to respond as quickly and accurately as possible.</p>
   </div> 
   `
 ]
 var pageInstruct = [
   `
   <div class="centerbox">
-    <p class="block-text">Finally, we will start a practice round of all three phases together. During practice, you will receive feedback and a reminder of the rules. These will be taken out for the test, so make sure you understand the instructions before moving on.</p>
+    <p class="block-text">Finally, we will start a practice round of the entire task together. During practice, you will receive feedback and a reminder of the rules. These will be taken out for the test, so make sure you understand the instructions before moving on.</p>
     <p class="block-text">Try to respond as quickly and accurately as possible.</p>
 
-    <p class="block-text">On each trial, you will see 0, 4, or 6 letters. If 4 or 6, remember them. Then you will see a shape.</p>
+    <p class="block-text">On each trial, you will see 4 or 6 letters or * signs. If you see letters, remember them. Then you will see a shape.</p>
     <p class="block-text">If the shape is a <b>${
       possibleResponses[0][0] == "right hand index finger" ? shapes[0] : shapes[1]
     }</b>, press your <b>right hand index finger (comma key (,))</b>.</p>
     <p class="block-text">If the shape is a <b>${
       possibleResponses[1][0] == "right hand middle finger" ? shapes[1] : shapes[0]
     }</b>, press your <b>right hand middle finger (period key (.))</b>.</p>
-    <p class="block-text">If you see the star, please try your best to <b>withhold your response</b> on that trial.</p>
+    <p class="block-text">If you see a star around the shape, please try your best to <b>withhold your response</b> on that trial.</p>
 
     <p class="block-text">Then you will see a single stimulus.</p>
     <p class="block-text">If it is a single letter that was <b>${
@@ -949,7 +955,7 @@ var pageInstruct = [
     <p class="block-text">If it is a the single letter that was <b>${
       possibleResponses[3][0] == "left hand middle finger" ? recognition[1] : recognition[0]
     }</b> from the first phase, press your <b>left hand middle finger (Z key)</b>.</p>
-    <p class="block-text">If there were 0 letters shown during the first phase, press your <b>${possibleResponses[3][0]} (${possibleResponses[3][2]})</b> when you see ().</p>
+    <p class="block-text">If there were * signs shown during the first phase, press your <b>${possibleResponses[3][0]} (${possibleResponses[3][2]})</b> when you see ().</p>
   </div>
   `,
 ];
