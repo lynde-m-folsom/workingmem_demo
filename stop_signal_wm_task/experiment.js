@@ -1303,9 +1303,6 @@ var goPracticeNode = {
   timeline: [setupGoPracticeFeedbackText, feedbackBlock].concat(goPracticeTrials),
   loop_function: function (data) {
     goPracticeCount += 1;
-    console.log('goPracticeNode goPracticeCount', goPracticeCount)
-    console.log('goPracticeNode feedbackText')
-    console.log(feedbackText)
 
     var correct = 0;
     var total = 0;
@@ -1946,7 +1943,7 @@ var practiceNode = {
       <div class="centerbox">
         <p class="block-text">We will now begin the test portion.</p>
         <p class="block-text">Keep your <b>right hand index finger</b> on the <b>comma key (,)</b> and your <b>right hand middle finger</b> on the <b>period key (.)</b></p>
-        <p class="block-text">Keey your <b>left hand index finger</b> on the <b>X key</b> and your <b>left hand middle finger</b> on the <b>Z key</b></p>
+        <p class="block-text">Keep your <b>left hand index finger</b> on the <b>X key</b> and your <b>left hand middle finger</b> on the <b>Z key</b></p>
         <p class="block-text">Press <i>enter</i> to continue.</p>
       </div>`;
 
