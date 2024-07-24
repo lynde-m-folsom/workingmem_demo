@@ -650,7 +650,7 @@ var endText = `
 
 var feedbackInstructText = `
   <p class="center-block-text">
-    Welcome! This experiment will take around 55 minutes.
+    Welcome! This experiment will take around 65 minutes.
   </p>
   <p class="center-block-text">
     To avoid technical issues, please keep the experiment tab (on Chrome or Firefox) active and in fullscreen mode for the whole duration of each task.
@@ -669,13 +669,13 @@ var instructTimeThresh = 1; // /in seconds
 var runAttentionChecks = true;
 
 var practiceLen = 18; // must be divisible by shapes.length * stopSignalsConditions.length and possiblePracticeMemoryLengths.length * possibleConditions.length
-var numTrialsPerBlock = 12 //72// must be divisible by shapes.length * stopSignalsConditions.length and possibleMemoryLengths.length * possibleConditions.length
-var numTestBlocks = 1//6;
+var numTrialsPerBlock = 36// must be divisible by shapes.length * stopSignalsConditions.length and possibleMemoryLengths.length * possibleConditions.length
+var numTestBlocks = 12;
 var goPracticeLen = 6;
 var phase1PracticeLen = 12;
 var phase2PracticeLen = 12;
 
-var practiceThresh = 2; // max number of times to repeat practice
+var practiceThresh = 3; // max number of times to repeat practice
 var accuracyThresh = 0.8;
 var practiceAccuracyThresh = 0.70;
 var practiceLetterAccuracyThresh = 0.60;
@@ -1118,6 +1118,53 @@ var practiceFixation = {
 
 var feedbackText =
   "<div class = centerbox><p class = center-block-text>Press <i>enter</i> to begin practice.</p></div>";
+
+// Flags to ensure feedbackText is set only once per node
+var goPracticeFirstLoop = true;
+var phase1PracticeFirstLoop = true;
+var phase2PracticeFirstLoop = true;
+var practiceFirstLoop = true;
+
+// Function to set feedbackText only once
+function setFeedbackTextIfFirstLoop(firstLoopFlag) {
+  if (firstLoopFlag) {
+    feedbackText = "<div class='centerbox'><p class='center-block-text'>Press <i>enter</i> to begin practice.</p></div>";
+  }
+}
+
+// Define setupFeedbackText functions for each practice node
+const setupGoPracticeFeedbackText = {
+  type: jsPsychCallFunction,
+  func: function() {
+    setFeedbackTextIfFirstLoop(goPracticeFirstLoop);
+    goPracticeFirstLoop = false;
+  }
+};
+
+const setupPhase1PracticeFeedbackText = {
+  type: jsPsychCallFunction,
+  func: function() {
+    setFeedbackTextIfFirstLoop(phase1PracticeFirstLoop);
+    phase1PracticeFirstLoop = false;
+  }
+};
+
+const setupPhase2PracticeFeedbackText = {
+  type: jsPsychCallFunction,
+  func: function() {
+    setFeedbackTextIfFirstLoop(phase2PracticeFirstLoop);
+    phase2PracticeFirstLoop = false;
+  }
+};
+
+const setupPracticeFeedbackText = {
+  type: jsPsychCallFunction,
+  func: function() {
+    setFeedbackTextIfFirstLoop(practiceFirstLoop);
+    practiceFirstLoop = false;
+  }
+};
+
 var feedbackBlock = {
   type: jsPsychHtmlKeyboardResponse,
   data: function () {
@@ -1252,9 +1299,11 @@ for (i = 0; i < goPracticeLen; i++) {
 }
 
 var goPracticeNode = {
-  timeline: [feedbackBlock].concat(goPracticeTrials),
+  timeline: [setupGoPracticeFeedbackText, feedbackBlock].concat(goPracticeTrials),
   loop_function: function (data) {
     goPracticeCount += 1;
+    console.log('goPracticeNode goPracticeCount', goPracticeCount)
+    console.log('goPracticeNode feedbackText')
     console.log(feedbackText)
 
     var correct = 0;
@@ -1278,7 +1327,6 @@ var goPracticeNode = {
       (correct / total >= goCorrectPracticeThresh &&
         missedResponses / total <= goOmissionPracticeThresh)
     ) {
-      console.log('flag 1')
       return false;
 
       } else {
@@ -1397,9 +1445,8 @@ for (i = 0; i < phase1PracticeLen; i++) {
     ITIBlock
   );
 }
-
 var phase1PracticeNode = {
-  timeline: [feedbackBlock].concat(phase1PracticeTrials),
+  timeline: [setupPhase1PracticeFeedbackText, feedbackBlock].concat(phase1PracticeTrials),
   loop_function: function (data) {
     phase1PracticeCount += 1;
     var correct = 0;
@@ -1444,7 +1491,7 @@ var phase1PracticeNode = {
       feedbackText +=
         `<p class=block-text>We are now going to repeat the practice round.</p>` +
         `<p class=block-text>Press <i>enter</i> to begin.</p></div>`;
-      phase1Stims = createMemoryTrialTypes(phase1PracticeLen);
+      phase1Stims = createPhase1TrialTypes(phase1PracticeLen);
       return true;
     }
   }
@@ -1537,9 +1584,8 @@ for (i = 0; i < phase2PracticeLen; i++) {
     ITIBlock
   );
 }
-
 var phase2PracticeNode = {
-  timeline: [feedbackBlock].concat(phase2PracticeTrials),
+  timeline: [setupPhase2PracticeFeedbackText, feedbackBlock].concat(phase2PracticeTrials),
   loop_function: function (data) {
     phase2PracticeCount += 1;
     var goLength = 0;
@@ -1806,10 +1852,9 @@ for (i = 0; i < practiceLen; i++) {
 
 var practiceCount = 0;
 var practiceNode = {
-  timeline: [feedbackBlock].concat(practiceStopTrials), 
+  timeline: [setupPracticeFeedbackText, feedbackBlock].concat(practiceStopTrials), 
   loop_function: function (data) {
     practiceCount += 1;
-
     // go trials
     var goLength = 0;
     var sumGoRT = 0;
@@ -1905,7 +1950,6 @@ var practiceNode = {
       </div>`;
 
       expStage = "test";
-      // memoryStims = createMemoryTrialTypes(numTrialsPerBlock);
       stims = createTrialTypes(numTrialsPerBlock);
       return false;
     } else {
