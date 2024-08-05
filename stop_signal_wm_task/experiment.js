@@ -675,7 +675,7 @@ var goPracticeLen = 6;
 var phase1PracticeLen = 12;
 var phase2PracticeLen = 12;
 
-var practiceThresh = 3; // max number of times to repeat practice
+var practiceThresh = 2; // max number of times to repeat practice
 var accuracyThresh = 0.8;
 var practiceAccuracyThresh = 0.70;
 var practiceLetterAccuracyThresh = 0.60;
