@@ -1,7 +1,3 @@
-// window.dataSync = function() {
-//   console.log('sunjae got into berkeley woo') 
-//  };
-
 /* ************************************ */
 /*       Define Helper Functions        */
 /* ************************************ */
@@ -922,7 +918,7 @@ var phase1Instruct = [
   `,
   `
   <div class="centerbox">
-    <p class="block-text">We’ll start a practice round of the memory task only. During practice, you will receive feedback and a reminder of the rules. These will be taken out for the test, so make sure you understand the instructions before moving on.</p>
+    <p class="block-text">We'll start a practice round of the memory task only. During practice, you will receive feedback and a reminder of the rules. These will be taken out for the test, so make sure you understand the instructions before moving on.</p>
     <p class="block-text">If the single letter was <b>${
       possibleResponses[2][0] == "left hand index finger" ? recognition[0] : recognition [1]
     }</b>, from the first phase, press your <b>left hand index finger (X key)</b>.</p>
